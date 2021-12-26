@@ -1,0 +1,8 @@
+This is why i very much like to work with 
+@PlatformIO_Org
+
+Forgot to add a reset button in your ESP32 board?
+1. Open serial monitor
+2. Hit Ctrl+T, Ctrl+D 
+3. Repeat above
+4. Instant hardware reset without interrupting the serial connection.
