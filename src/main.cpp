@@ -50,7 +50,9 @@ void setup () {
     }
 
     WiFi.mode (WIFI_STA);
-    WiFiMulti1.addAP (WIFI_SSID, WIFI_PASS);
+    WiFiMulti1.addAP ("TKT11", "13031968");
+    WiFiMulti1.addAP ("CONSULTANT 2890", "01112018");
+    // WiFiMulti1.addAP (WIFI_SSID, WIFI_PASS);
 
     //  do not reboot automatically when update is over (since we need to display message)
     httpUpdate.rebootOnUpdate (false);

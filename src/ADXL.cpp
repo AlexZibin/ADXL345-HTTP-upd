@@ -191,12 +191,12 @@ void setupADXL (void) {
     Wire.begin ();
 
     int nDevices = scanI2C ();
-    for (int i = 30; i; i--) {
-        leds[1] = nDevices ? CRGB::Green : CRGB::Red;
+    for (int i = 8; i; i--) {
+        leds[1] = nDevices > 1 ? CRGB::Green : CRGB::Red;
         FastLED.show ();
         Serial.println (i);
 
-        if (i > 26)
+        if (i > 5)
             digitalWrite (BUZZER_PIN, HIGH);
 
         delay (500);
@@ -218,8 +218,15 @@ void setupADXL (void) {
     if (!accel.begin ()) {
         /* There was a problem detecting the ADXL345 ... check your connections */
         Serial.println ("Ooops, no ADXL345 detected ... Check your wiring!");
+        leds[1] = CRGB::Blue;
+        FastLED.show ();
         delay (1500);
+        // leds[1] = CRGB::Black;
+        // FastLED.show ();
         // while (1);
+    } else {
+        leds[1] = CRGB::Green;
+        FastLED.show ();
     }
 
     /* Set the range to whatever is appropriate for your project */
