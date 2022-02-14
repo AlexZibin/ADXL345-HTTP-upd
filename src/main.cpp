@@ -12,6 +12,8 @@
 #include <HTTPClient.h>
 #include <HTTPUpdate.h>
 
+#include "my-espui.h"
+
 WiFiMulti WiFiMulti1;
 
 void handleOTAProgress (size_t percent, size_t a100) {
@@ -43,6 +45,7 @@ void setup () {
     Serial.println (esp_get_idf_version ());
 
     setupADXL ();
+    setupESPUI ();
 
     for (uint8_t t = 3; t > 0; t--) {
         Serial.printf ("[OLD SETUP] WAIT %d...\n", t);
