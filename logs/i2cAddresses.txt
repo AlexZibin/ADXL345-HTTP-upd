@@ -1,0 +1,30 @@
+VER. _1.20220206.230307
+
+ESP32 SDK Ver:v3.3.5-1-g85c43024c  
+Accelerometer Test
+
+Scanning I2C bus...
+I2C device found at address 0x1D  ! // ADXL345
+I2C device found at address 0x75  ! // IP5306
+done                                // DS1307 must be at 0x68
+
+8
+7
+6
+5
+4
+3
+2
+1
+Ooops, no ADXL345 detected ... Check your wiring!
+------------------------------------
+Sensor:       ADXL345
+Driver Ver:   1
+Unique ID:    12345
+Max Value:    -156.91 m/s^2
+Min Value:    156.91 m/s^2
+Resolution:   0.04 m/s^2
+------------------------------------
+
+Data Rate:    400  Hz
+Range:         +/- 4  g
