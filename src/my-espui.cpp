@@ -159,7 +159,7 @@ void setupESPUI (void) {
 
   // try to connect to existing network
   WiFi.begin(ssid, password);
-  Serial.print("\n\nTry to connect to existing network");
+  Serial.println ("\n\nTry to connect to existing network");
 
   {
     uint8_t timeout = 10;
@@ -211,25 +211,7 @@ void setupESPUI (void) {
   ESPUI.text("Text Test:", &textCall, ControlColor::Alizarin, "a Text Field");
   ESPUI.number("Numbertest", &numberCall, ControlColor::Alizarin, 5, 0, 10);
 
-  graphId = ESPUI.graph("Graph Test", ControlColor::Wetasphalt);
-
-  /*
-   * .begin loads and serves all files from PROGMEM directly.
-   * If you want to serve the files from SPIFFS use ESPUI.beginSPIFFS
-   * (.prepareFileSystem has to be run in an empty sketch before)
-   */
- 
-  // Enable this option if you want sliders to be continuous (update during move) and not discrete (update on stop)
-  // ESPUI.sliderContinuous = true;
-
-  /*
-   * Optionally you can use HTTP BasicAuth. Keep in mind that this is NOT a
-   * SECURE way of limiting access.
-   * Anyone who is able to sniff traffic will be able to intercept your password
-   * since it is transmitted in cleartext. Just add a string as username and
-   * password, for example begin("ESPUI Control", "username", "password")
-   */
-
+//   graphId = ESPUI.graph("Graph Test", ControlColor::Wetasphalt);
 
   ESPUI.begin("ESPUI Control");
 }
@@ -240,10 +222,10 @@ void loopESPUI (void) {
     static long oldTime = 0;
     static bool testSwitchState = false;
 
-    if (millis() - oldTime > 5000) {
+    if (millis() - oldTime > 25000) {
         ESPUI.print(millisLabelId, String(millis()));
 
-        ESPUI.addGraphPoint(graphId, random(1, 50));
+        // ESPUI.addGraphPoint(graphId, random(1, 50));
 
         testSwitchState = !testSwitchState;
         ESPUI.updateSwitcher(testSwitchId, testSwitchState);

@@ -188,12 +188,12 @@ void setupADXL (void) {
     Wire.begin ();
 
     int nDevices = scanI2C ();
-    for (int i = 8; i; i--) {
+    for (int i = 4; i; i--) {
         leds[1] = nDevices > 1 ? CRGB::Green : CRGB::Red;
         FastLED.show ();
         Serial.println (i);
 
-        if (i > 5)
+        if (i > 2)
             digitalWrite (BUZZER_PIN, HIGH);
 
         delay (500);
@@ -247,9 +247,9 @@ void loopADXL (void) {
     accel.getEvent(&event);
     
     /* Display the results (acceleration is measured in m/s^2) */
-    Serial.print("X: "); Serial.print(event.acceleration.x); Serial.print("  ");
-    Serial.print("Y: "); Serial.print(event.acceleration.y); Serial.print("  ");
-    Serial.print("Z: "); Serial.print(event.acceleration.z); Serial.print("  ");Serial.println("m/s^2 ");
+    // Serial.print("X: "); Serial.print(event.acceleration.x); Serial.print("  ");
+    // Serial.print("Y: "); Serial.print(event.acceleration.y); Serial.print("  ");
+    // Serial.print("Z: "); Serial.print(event.acceleration.z); Serial.print("  ");Serial.println("m/s^2 ");
 
     if (
             event.acceleration.x > 5

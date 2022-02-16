@@ -7,15 +7,15 @@
 #include "ADXL.h"
 
 #include <WiFi.h>
-#include <WiFiMulti.h>
+// #include <WiFiMulti.h>
 
-#include <HTTPClient.h>
+// #include <HTTPClient.h>
 #include <HTTPUpdate.h>
 
 
-// #include "my-espui.h"
+#include "my-espui.h"
 
-WiFiMulti WiFiMulti1;
+// WiFiMulti WiFiMulti1;
 
 void handleOTAProgress (size_t percent, size_t a100) {
     static int savedPercent = -1;
@@ -46,7 +46,7 @@ void setup () {
     Serial.println (esp_get_idf_version ());
 
     setupADXL ();
-    // setupESPUI ();
+    setupESPUI ();
     
 
     for (uint8_t t = 3; t > 0; t--) {
@@ -55,9 +55,10 @@ void setup () {
         delay (500);
     }
 
-    WiFi.mode (WIFI_STA);
-    WiFiMulti1.addAP ("TKT11", "13031968");
-    WiFiMulti1.addAP ("CONSULTANT 2890", "48#24Qa2");
+    // WiFi.mode (WIFI_STA);
+
+    // WiFiMulti1.addAP ("TKT11", "13031968");
+    // WiFiMulti1.addAP ("CONSULTANT 2890", "48#24Qa2");
     // WiFiMulti1.addAP (WIFI_SSID, WIFI_PASS);
 
     //  do not reboot automatically when update is over (since we need to display message)
@@ -66,10 +67,13 @@ void setup () {
     Update.onProgress (handleOTAProgress);
 
     // wait for WiFi connection
-    while ((WiFiMulti1.run () != WL_CONNECTED)) {
+    while ((WiFi.status () != WL_CONNECTED)) {
         Serial.print (" .");
+        WiFi.disconnect();
+        WiFi.reconnect();        
+        delay (500);
     }
-    if ((WiFiMulti1.run () == WL_CONNECTED)) {
+    if ((WiFi.status () == WL_CONNECTED)) {
         WiFiClient client;
 
         // httpUpdate.setLedPin(LED_BUILTIN, LOW);
