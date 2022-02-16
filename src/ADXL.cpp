@@ -169,9 +169,6 @@ void fastledBlink (int on) {
 }
 
 void setupADXL (void) {
-// #ifndef ESP8266
-//     while (!Serial); // for Leonardo/Micro/Zero
-// #endif
     // Serial.begin (115200);
     Serial.println ("Accelerometer Test"); Serial.println("");
     
@@ -215,7 +212,7 @@ void setupADXL (void) {
     // This translates to 0xA6 for a write and 0xA7 for a read.
     // #define ADXL345_DEFAULT_ADDRESS (0x53) ///< Assumes ALT address pin low
 
-    if (!accel.begin ()) {
+    if (!accel.begin (0x1D)) {
         /* There was a problem detecting the ADXL345 ... check your connections */
         Serial.println ("Ooops, no ADXL345 detected ... Check your wiring!");
         leds[1] = CRGB::Blue;
@@ -254,7 +251,17 @@ void loopADXL (void) {
     Serial.print("Y: "); Serial.print(event.acceleration.y); Serial.print("  ");
     Serial.print("Z: "); Serial.print(event.acceleration.z); Serial.print("  ");Serial.println("m/s^2 ");
 
-    if (event.acceleration.z < -3) {
+    if (
+            event.acceleration.x > 5
+                &&
+            event.acceleration.y > -3
+                &&
+            event.acceleration.y < 3
+                &&
+            event.acceleration.z > 1
+                &&
+            event.acceleration.z < 5
+        ) {
         // digitalWrite (BUZZER_PIN, HIGH);
         // leds[0] = CRGB::Red;
         leds[1] = CRGB::Red;
