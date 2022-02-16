@@ -13,8 +13,10 @@ DNSServer dnsServer;
 #include <ESP8266WiFi.h>
 #endif
 
-const char *ssid = "ESPUI";
-const char *password = "espui";
+const char *ssid = WIFI_SSID;
+const char *password = WIFI_PASS;
+// const char *ssid = "ESPUI";
+// const char *password = "espui";
 
 const char *hostname = "espui";
 
@@ -187,7 +189,8 @@ void setupESPUI (void) {
     }
   }
 
-  dnsServer.start(DNS_PORT, "*", apIP);
+  dnsServer.start(DNS_PORT, "www.myesp32.com", apIP);
+//   dnsServer.start(DNS_PORT, "*", apIP);
 
   Serial.println("\n\nWiFi parameters:");
   Serial.print("Mode: ");
