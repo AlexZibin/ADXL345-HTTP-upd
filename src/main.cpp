@@ -76,6 +76,7 @@ void setup () {
     if ((WiFi.status () == WL_CONNECTED)) {
         WiFiClient client;
 
+
         // httpUpdate.setLedPin(LED_BUILTIN, LOW);
         //t_httpUpdate_return ret = httpUpdate.update(client, "http://server/file.bin");
         t_httpUpdate_return ret = httpUpdate.update(client, String (UPDATE_SERVER_URL) + 

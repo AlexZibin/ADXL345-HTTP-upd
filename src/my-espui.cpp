@@ -1,11 +1,13 @@
 // #define ESP32
-#include <DNSServer.h>
+// #include <DNSServer.h>
+#include <ESPmDNS.h>
+
 #include <ESPUI.h>
 #include "my-espui.h"
 
-const byte DNS_PORT = 53;
+// const byte DNS_PORT = 53;
+// DNSServer dnsServer;
 IPAddress apIP(192, 168, 1, 1);
-DNSServer dnsServer;
 
 #if defined ESP32
 #include <WiFi.h>
@@ -151,14 +153,9 @@ void setupESPUI (void) {
   ESPUI.setVerbosity (Verbosity::VerboseJSON);
 //   Serial.begin(115200);
 
-#if defined(ESP32)
   WiFi.setHostname(hostname);
-#else
-  WiFi.hostname(hostname);
-#endif
-
-  // try to connect to existing network
-  WiFi.begin(ssid, password);
+//   WiFi.begin(ssid, "password");
+  WiFi.begin(ssid, "");
   Serial.println ("\n\nTry to connect to existing network");
 
   {
@@ -176,8 +173,8 @@ void setupESPUI (void) {
       Serial.print("\n\nCreating hotspot");
 
       WiFi.mode(WIFI_AP);
-      WiFi.softAPConfig(apIP, apIP, IPAddress(255, 255, 255, 0));
-      WiFi.softAP(ssid);
+      WiFi.softAPConfig (apIP, apIP, IPAddress(255, 255, 255, 0));
+      WiFi.softAP ("esp32ap");
 
       timeout = 5;
 
@@ -189,7 +186,14 @@ void setupESPUI (void) {
     }
   }
 
-  dnsServer.start(DNS_PORT, "www.myesp32.com", apIP);
+    if (!MDNS.begin ("esp32")) { // => www.esp32.local
+        Serial.println ("Error starting mDNS");
+        return;
+    } else {
+        Serial.println ("mDNS started successflly for esp32!");
+    }
+  
+  // dnsServer.start(DNS_PORT, "www.myesp32.com", apIP);
 //   dnsServer.start(DNS_PORT, "*", apIP);
 
   Serial.println("\n\nWiFi parameters:");
@@ -217,7 +221,7 @@ void setupESPUI (void) {
 }
 
 void loopESPUI (void) {
-    dnsServer.processNextRequest();
+    // dnsServer.processNextRequest();
 
     static long oldTime = 0;
     static bool testSwitchState = false;
