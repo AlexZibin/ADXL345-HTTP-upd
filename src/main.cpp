@@ -1,6 +1,8 @@
-// https://www.esp8266.com/wiki/doku.php?id=ota-over-the-air-esp8266
 // 2021-04-26
+// https://www.esp8266.com/wiki/doku.php?id=ota-over-the-air-esp8266
 
+// 2022-02-18:
+// win cmd, arp -a to get a list of all other IP addresses active on your network
 
 #include <Arduino.h>
 #include "build_defs.h"
