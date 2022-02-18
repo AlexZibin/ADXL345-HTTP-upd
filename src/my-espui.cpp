@@ -1,13 +1,16 @@
 // #define ESP32
-// #include <DNSServer.h>
-#include <ESPmDNS.h>
+#include <DNSServer.h>
+// #include <ESPmDNS.h>
 
 #include <ESPUI.h>
 #include "my-espui.h"
 
-// const byte DNS_PORT = 53;
-// DNSServer dnsServer;
+const byte DNS_PORT = 53;
+DNSServer dnsServer;
 IPAddress apIP(192, 168, 1, 1);
+
+// https://github.com/espressif/arduino-esp32/blob/master/libraries/DNSServer/examples/CaptivePortal/CaptivePortal.ino
+// IPAddress apIP(8,8,4,4); // The default android DNS
 
 #if defined ESP32
 #include <WiFi.h>
@@ -150,12 +153,12 @@ void otherSwitchExample(Control *sender, int value) {
 }
 
 void setupESPUI (void) {
-  ESPUI.setVerbosity (Verbosity::VerboseJSON);
+  // ESPUI.setVerbosity (Verbosity::VerboseJSON);
 //   Serial.begin(115200);
 
-  WiFi.setHostname(hostname);
-//   WiFi.begin(ssid, "password");
-  WiFi.begin(ssid, "");
+  WiFi.setHostname (hostname);
+  WiFi.begin (ssid, password);
+//   WiFi.begin (ssid, "");
   Serial.println ("\n\nTry to connect to existing network");
 
   {
@@ -186,15 +189,8 @@ void setupESPUI (void) {
     }
   }
 
-    if (!MDNS.begin ("esp32")) { // => www.esp32.local
-        Serial.println ("Error starting mDNS");
-        return;
-    } else {
-        Serial.println ("mDNS started successflly for esp32!");
-    }
-  
-  // dnsServer.start(DNS_PORT, "www.myesp32.com", apIP);
-//   dnsServer.start(DNS_PORT, "*", apIP);
+//   dnsServer.start(DNS_PORT, "www.myesp32.com", apIP);
+  dnsServer.start(DNS_PORT, "*", apIP);
 
   Serial.println("\n\nWiFi parameters:");
   Serial.print("Mode: ");
@@ -221,13 +217,14 @@ void setupESPUI (void) {
 }
 
 void loopESPUI (void) {
-    // dnsServer.processNextRequest();
+    dnsServer.processNextRequest();
 
     static long oldTime = 0;
     static bool testSwitchState = false;
 
-    if (millis() - oldTime > 25000) {
+    if (millis() - oldTime > 5000) {
         ESPUI.print(millisLabelId, String(millis()));
+        // Serial.println (testSwitchState);
 
         // ESPUI.addGraphPoint(graphId, random(1, 50));
 

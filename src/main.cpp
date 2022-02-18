@@ -4,6 +4,15 @@
 // 2022-02-18:
 // win cmd, arp -a to get a list of all other IP addresses active on your network
 
+// {
+// RTC_DATA_ATTR int bootCount;
+// Reset Boot counter if reason was brownout or first power-on
+// if (rtc_get_reset_reason(0) == 1 || rtc_get_reset_reason(0) == 15 || 
+// rtc_get_reset_reason(1) == 1 || rtc_get_reset_reason(1) == 15) { bootCount = 0; }
+// bootCount++;
+// }
+
+
 #include <Arduino.h>
 #include "build_defs.h"
 #include "ADXL.h"
@@ -63,21 +72,24 @@ void setup () {
     // WiFiMulti1.addAP ("CONSULTANT 2890", "48#24Qa2");
     // WiFiMulti1.addAP (WIFI_SSID, WIFI_PASS);
 
-    //  do not reboot automatically when update is over (since we need to display message)
-    httpUpdate.rebootOnUpdate (false);
-    //  this callback is used to draw a horizontal progress line on the OTA screen
-    Update.onProgress (handleOTAProgress);
-
     // wait for WiFi connection
-    while ((WiFi.status () != WL_CONNECTED)) {
-        Serial.print (" .");
-        WiFi.disconnect();
-        WiFi.reconnect();        
-        delay (500);
+    { int i = 5;
+        while ((WiFi.status () != WL_CONNECTED) && i-- > 0) {
+            Serial.print ("status () != WL_CONNECTED ");
+            Serial.println (i);
+            WiFi.disconnect();
+            WiFi.reconnect();        
+            delay (500);
+        }
     }
-    if ((WiFi.status () == WL_CONNECTED)) {
-        WiFiClient client;
 
+    if ((WiFi.status () == WL_CONNECTED)) {
+        //  do not reboot automatically when update is over (since we need to display message)
+        httpUpdate.rebootOnUpdate (false);
+        //  this callback is used to draw a horizontal progress line on the OTA screen
+        Update.onProgress (handleOTAProgress);
+
+        WiFiClient client;
 
         // httpUpdate.setLedPin(LED_BUILTIN, LOW);
         //t_httpUpdate_return ret = httpUpdate.update(client, "http://server/file.bin");
@@ -102,6 +114,8 @@ void setup () {
             ESP.restart ();
             break;
         }
+    } else {
+        Serial.println ("No internet connection.");
     }
     fastledBlink (0);
 }
